@@ -107,7 +107,9 @@ def user_registration(bank):
     # Pass all the validation steps
     if has_letter and has_number and has_special and has_upper and has_valid_name:
         # Create a new BankAccount object
-        bank_account = BankAccount(username, password, fullname)
+        # Generate an account number
+        account_number = bank.generate_account_number()
+        bank_account = BankAccount(username, password, fullname, account_number=account_number)
 
         #Add to the bank data
         bank.add_account(bank_account)

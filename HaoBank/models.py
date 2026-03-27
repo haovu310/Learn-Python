@@ -8,16 +8,12 @@ class User:
 
 # Bank account class
 class BankAccount(User):
-    def __init__(self, username, password, fullname, balance=0.0, account_number = None):
+    def __init__(self, username, password, fullname, balance=0.0, account_number = 0):
         super().__init__(username, password)
         self.fullname = fullname
         self._balance = balance
-
-        if account_number is None:
-            self.account_number = random.randint(1000, 9999)
-        else:
-            self.account_number = account_number
-
+        self.account_number = account_number
+        
     def __str__(self):
         return f"Account Holder: {self.fullname} | Balance: ${self.balance:.2f}"
 
@@ -96,7 +92,17 @@ class Bank:
                 return account
         return None
          
-    
+    def generate_account_number(self):
+        while True:
+            account_number = 69960000 + random.randint(1000, 9999)
+
+            # Check for uniqueness
+            if account_number not in self.accounts:
+                return account_number
+            else:
+                # Try again
+                continue
+        
     @classmethod
     def get_total_funds(cls):
         return cls.total_bank_funds

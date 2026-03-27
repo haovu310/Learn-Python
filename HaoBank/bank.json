@@ -1,9 +1,16 @@
 {
-    "3723": {
+    "69961234": {
         "username": "haovu310",
         "password": "N12345678@",
         "fullname": "VU THIEN MINH HAO",
         "balance": 975.0,
-        "account_number": 3723
+        "account_number": 69961234
+    },
+    "69963724": {
+        "username": "diemgay",
+        "password": "N12345678!",
+        "fullname": "GABRIEL HA DIEM",
+        "balance": 0.0,
+        "account_number": 69963724
     }
 }
