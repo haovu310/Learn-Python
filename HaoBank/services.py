@@ -87,7 +87,8 @@ def user_registration(bank):
         if fullname.strip() == "":
             print("\nPlease enter a name, dont leave a blank space")
             continue
-
+        
+        # Check for number and special characters
         for char in fullname:
             if not (char.isalpha() or char == " "):
                 is_name_valid = False
@@ -161,3 +162,83 @@ def user_authentication(bank):
             username_attempts += 1
         
     return None
+
+def transfer_validation(bank, sender_account):
+    acc_num_attempts = 0
+    amount_attempts = 0
+
+    while acc_num_attempts < 3:
+        receiver_acc_num = input("Please enter the receiver account number: ")
+
+        # Check if the receiver account number is not empty
+        if receiver_acc_num.strip() == "":
+            print("Please enter the receiver account number, dont leave a blank space !")
+            continue
+
+        # Check if the user enter any alphabet or special character
+        if not receiver_acc_num.isdigit():
+            print("The receiver account number must not contains any alphabet or special characters !")
+            acc_num_attempts += 1
+            continue
+
+        # Initialize the receiver account
+        receiver_account = bank.get_account(int(receiver_acc_num))
+
+        # Check if the receiver account number is a valid number
+        if receiver_account is None:
+            print("The receiver account was not found ! Please enter a valid account number !")
+            acc_num_attempts += 1
+            continue
+
+        # Check if the user transfer the money to them selve
+        if receiver_account.account_number == sender_account.account_number:
+            print("Please enter another account number ! Dont transfer money to yourself :v ")
+            acc_num_attempts += 1
+            continue
+        
+        while amount_attempts < 3:
+            # Ask for amount to be tranfered
+            amount = input("Please input the amount you want to transfer: ")
+
+            # Check if the amount is not empty
+            if amount.strip() == "":
+                print("Please enter a valid amount, dont leave a blank space !")
+                amount_attempts += 1
+                continue
+
+            # Check if the user enter any alphabet or special character
+            try:
+                amount = float(amount)
+            except ValueError:
+                print("Invalid amount ! The transfer amount must not contains any alphabet or special characters !")
+                amount_attempts += 1
+                continue
+
+
+            # Check for negative amount
+            if amount <= 0:
+                print("The transfer amount must be greater than 0 !")
+                amount_attempts += 1
+                continue
+
+            # Check if the balance of the sender is enough
+            if amount > sender_account.balance:
+                print("Insufficient balance! Please enter an amount that is less than or equal to your balance !")
+                sender_account.showBalance()
+                continue
+            
+            # Validation complete, begin the transfer process
+
+            transfer_money(sender_account, receiver_account, amount)
+            return True
+        print("You have enter a wrong amount so many times ! You will be directed back to the previous page !")
+        return False
+    
+    print("You have enter a wrong account number so many times ! You will be directed back to the previous page !")
+    return False
+
+def transfer_money(sender, receiver, amount):
+    sender.decrease_balance(amount)
+    receiver.increase_balance(amount)
+
+    print("Transfered successfully !")

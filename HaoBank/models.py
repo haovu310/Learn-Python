@@ -46,6 +46,14 @@ class BankAccount(User):
         else:
             print("Invalid input, please enter an amount that is larger than 0")
 
+    # Transfer money to another account
+    def increase_balance(self, amount):
+        self._balance += amount
+
+    # Receive money from another account
+    def decrease_balance(self, amount):
+        self._balance -= amount
+
     def validate_password(self, password):
         if self.password == password:
             return True

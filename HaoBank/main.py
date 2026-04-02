@@ -1,5 +1,5 @@
 from repository import load_bank_data, save_bank_data
-from services import user_registration, user_authentication
+from services import user_registration, user_authentication, transfer_validation
 from models import Bank
 
 def main():
@@ -23,7 +23,7 @@ def main():
             current_account = user_authentication(my_bank)
 
             if current_account is not None:
-                user_menu(current_account)
+                user_menu(my_bank, current_account)
             else:
                 print("You have attemped to many failed logins ! You will be returned to the main menu !")
         elif choice == "3":
@@ -37,10 +37,10 @@ def main():
         else:
             print("Invalid input, please enter a number from 1-4 !")
 
-def user_menu(account):
+def user_menu(bank, account):
     while(True):
-        print("\nWelcome to the banking system application. Please enter a number to proceed.")
-        print("1. Show balance\n2. Withdraw\n3. Deposit\n4. Log out")
+        print("\nWelcome comeback ! Please enter a number to proceed.")
+        print("1. Show balance\n2. Withdraw\n3. Deposit\n4. Transfer money\n5. Logout")
 
         choice = input("Your choice: ")
 
@@ -51,7 +51,7 @@ def user_menu(account):
         # Withdraw 
         elif(choice == "2"):
             try:
-                amount = float(input("Please enter the amount that you want to withdrawn: "))
+                amount = float(input("Please enter the amount that you want to withdraw: "))
                 account.withdraw(amount)
             except ValueError:
                 print("\nPlease only enter a valid amount (No alphabet or special characters)")
@@ -62,8 +62,11 @@ def user_menu(account):
                 account.deposit(amount)
             except ValueError:
                 print("\nPlease only enter a valid amount (No alphabet or special characters)") 
+        elif(choice == "4"):
+                # Transfer the money
+                transfer_validation(bank, account)               
         # Exit
-        elif choice == "4":
+        elif choice == "5":
             print("\nThanks for using our program. You are now log out! Have a good day !")
             #Break the loop
             break
